@@ -92,7 +92,20 @@ int main(void)
     __asm("nop");
   }
 #endif
+
+  while(1){
+	  LEDPin1_SetVal();
+	    LEDPin2_SetVal();
+	    WAIT1_Waitms(1000);
+	    LEDPin1_ClrVal();
+	    LEDPin2_ClrVal();
+	    WAIT1_Waitms(1000);
+  }
+
   APP_Start();
+
+
+
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
   #ifdef PEX_RTOS_START

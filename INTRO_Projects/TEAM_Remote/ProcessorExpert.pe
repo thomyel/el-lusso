@@ -3,7 +3,7 @@
   <Header>
     <Name>TEAM_Remote</Name>
     <SavedBy>Erich Styger Local</SavedBy>
-    <ModificationStamp>114</ModificationStamp>
+    <ModificationStamp>116</ModificationStamp>
     <Date>2016-09-20</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.2.RT7_b1550-0615</PEversion>
@@ -29,7 +29,7 @@
     <UseExistingModules>true</UseExistingModules>
     <RenamePeripheries>false</RenamePeripheries>
     <Autodependency>true</Autodependency>
-    <ProjectCompNumb>458</ProjectCompNumb>
+    <ProjectCompNumb>462</ProjectCompNumb>
     <DelUnusedPreviouslyGenFiles>true</DelUnusedPreviouslyGenFiles>
     <GeneratedCodeFrozen>false</GeneratedCodeFrozen>
     <AssignInitComponentNameToPrph>true</AssignInitComponentNameToPrph>
@@ -5791,7 +5791,7 @@
         <ItemSymbol>FRTrace</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>PTRC1</Value>
+        <Value />
       </ItemState>
       <ItemState>
         <ItemSymbol>CollectRuntimeStatisticsGroup</ItemSymbol>
@@ -5821,8 +5821,8 @@
         <ItemSymbol>RuntimeCntrLDD</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>RuntimeCntrLDD</Value>
-        <RegCompType>RuntimeCntrLDD</RegCompType>
+        <Value />
+        <RegCompType>TimerUnit_LDD</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState>
           <Repository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</Repository>
@@ -6930,8 +6930,8 @@
         <ItemSymbol>SWI</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>SWI</Value>
-        <RegCompType>SWI</RegCompType>
+        <Value />
+        <RegCompType>InterruptVector</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState>
           <Repository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</Repository>
@@ -7466,20 +7466,34 @@
         <Value>UTIL1</Value>
       </ItemState>
       <ItemState>
-        <ItemSymbol>NewlibReentrant</ItemSymbol>
-        <ReadOnly>false</ReadOnly>
-        <UserReadOnly>false</UserReadOnly>
-        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>1</Index>
-        <Value>false</Value>
-      </ItemState>
-      <ItemState>
         <ItemSymbol>KinetisSDKenabled</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <Index>0</Index>
         <Value>true</Value>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>M4FFloatingPointSupport</ItemSymbol>
+        <ReadOnly>true</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>1</Index>
+        <Value>false</Value>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>ARMLowestInterrutpPriority</ItemSymbol>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Value>15</Value>
+        <Base>DEC</Base>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>NewlibReentrant</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>1</Index>
+        <Value>false</Value>
       </ItemState>
     </Properties>
     <Methods>
@@ -9250,6 +9264,14 @@
         <UserReadOnly>false</UserReadOnly>
         <Value>CLS1</Value>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>UseACK</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -9380,8 +9402,8 @@
         <ItemSymbol>CE</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>CE</Value>
-        <RegCompType>CE</RegCompType>
+        <Value />
+        <RegCompType>BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState>
           <Repository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</Repository>
@@ -9976,8 +9998,8 @@
         <ItemSymbol>CSN</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>CSN</Value>
-        <RegCompType>CSN</RegCompType>
+        <Value />
+        <RegCompType>BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState>
           <Repository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</Repository>
@@ -10630,7 +10652,7 @@
         <ItemSymbol>IRQ</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>IRQ</Value>
+        <Value />
         <RegCompType>IRQ</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState />
@@ -20487,6 +20509,72 @@
         <Value>UTIL1</Value>
       </ItemState>
       <ItemState>
+        <ItemSymbol>EventsGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>KernelServiceCalls</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>TaskGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>vTaskDelayEventGenerated</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>vTaskDelayUntilEventGenerated</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>IncludeNewTimeEvents</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>1</Index>
+        <Value>false</Value>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>TraceDataAllocation</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <EnumSymbVal>TRACE_DATA_ALLOCATION_STATIC</EnumSymbVal>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>IncludeEventStats</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>1</Index>
+        <Value>false</Value>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>EventCountSize</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Value>256</Value>
+        <Base>DEC</Base>
+      </ItemState>
+      <ItemState>
         <ItemSymbol>trcStartupEnableMethod</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
@@ -20641,24 +20729,24 @@
       </ItemState>
       <ItemState>
         <ItemSymbol>vTraceStoreISRBegin</ItemSymbol>
-        <ReadOnly>false</ReadOnly>
+        <ReadOnly>true</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <Index>0</Index>
         <Value>true</Value>
         <LastSelection>true</LastSelection>
-        <LastUserSel>yes</LastUserSel>
+        <LastUserSel>always</LastUserSel>
         <UsrMethodName>vTraceStoreISRBegin</UsrMethodName>
       </ItemState>
       <ItemState>
         <ItemSymbol>vTraceStoreISREnd</ItemSymbol>
-        <ReadOnly>false</ReadOnly>
+        <ReadOnly>true</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <Index>0</Index>
         <Value>true</Value>
         <LastSelection>true</LastSelection>
-        <LastUserSel>yes</LastUserSel>
+        <LastUserSel>always</LastUserSel>
         <UsrMethodName>vTraceStoreISREnd</UsrMethodName>
       </ItemState>
       <ItemState>
@@ -20715,6 +20803,116 @@
         <LastSelection>true</LastSelection>
         <LastUserSel>yes</LastUserSel>
         <UsrMethodName>Startup</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>vTraceSetTimerFrequency</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>vTraceSetTimerFrequency</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>xTraceOpenLabel</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>xTraceOpenLabel</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>vTraceUserEvent</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>vTraceUserEvent</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>vTraceSetISRProperties</ItemSymbol>
+        <ReadOnly>true</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>always</LastUserSel>
+        <UsrMethodName>vTraceSetISRProperties</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>vTraceTaskSkipDefaultInstanceFinishedEvents</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>vTraceTaskSkipDefaultInstanceFinishedEvents</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>vTraceTaskInstanceIsFinished</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>vTraceTaskInstanceIsFinished</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>vTraceExcludeTaskFromSchedulingTrace</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>vTraceExcludeTaskFromSchedulingTrace</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>vTraceInitTraceData</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>vTraceInitTraceData</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>vTraceTaskInstanceFinish</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>vTraceTaskInstanceFinish</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>vTraceTaskInstanceFinishDirect</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>vTraceTaskInstanceFinishDirect</UsrMethodName>
       </ItemState>
     </Methods>
     <Events>
@@ -20916,8 +21114,8 @@
         <ItemSymbol>RES</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>RES</Value>
-        <RegCompType>RES</RegCompType>
+        <Value />
+        <RegCompType>BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState>
           <Repository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</Repository>
@@ -21511,8 +21709,8 @@
         <ItemSymbol>SCE</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>SCE</Value>
-        <RegCompType>SCE</RegCompType>
+        <Value />
+        <RegCompType>BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState>
           <Repository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</Repository>
@@ -22106,8 +22304,8 @@
         <ItemSymbol>D_C</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>D_C</Value>
-        <RegCompType>D_C</RegCompType>
+        <Value />
+        <RegCompType>BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState>
           <Repository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</Repository>
@@ -22723,7 +22921,7 @@
         <ItemSymbol>RESLDD</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>RESLDD</Value>
+        <Value />
         <RegCompType>RESLDD</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState />
@@ -22732,7 +22930,7 @@
         <ItemSymbol>SCELDD</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>SCELDD</Value>
+        <Value />
         <RegCompType>SCELDD</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState />
@@ -22741,7 +22939,7 @@
         <ItemSymbol>D_CLDD</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>D_CLDD</Value>
+        <Value />
         <RegCompType>D_CLDD</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState />
@@ -25893,8 +26091,8 @@
         <ItemSymbol>LEDPin</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>LEDpin</Value>
-        <RegCompType>LEDpin</RegCompType>
+        <Value />
+        <RegCompType>BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState>
           <Repository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</Repository>
@@ -26530,6 +26728,17 @@
     </Properties>
     <Methods>
       <ItemState>
+        <ItemSymbol>Init</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>Init</UsrMethodName>
+      </ItemState>
+      <ItemState>
         <ItemSymbol>On</ItemSymbol>
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <Index>0</Index>
@@ -26612,17 +26821,6 @@
         <LastSelection>true</LastSelection>
         <LastUserSel>yes</LastUserSel>
         <UsrMethodName>Deinit</UsrMethodName>
-      </ItemState>
-      <ItemState>
-        <ItemSymbol>Init</ItemSymbol>
-        <ReadOnly>false</ReadOnly>
-        <UserReadOnly>false</UserReadOnly>
-        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>0</Index>
-        <Value>true</Value>
-        <LastSelection>true</LastSelection>
-        <LastUserSel>yes</LastUserSel>
-        <UsrMethodName>Init</UsrMethodName>
       </ItemState>
     </Methods>
     <Events />
@@ -56609,7 +56807,7 @@
         <ItemSymbol>USBInit</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>Init_USB_OTG_VAR0</Value>
+        <Value />
         <RegCompType>Init_USB_OTG_VAR0</RegCompType>
         <RegCompRepository>file:/${ProcessorExpert_loc}/Repositories/Kinetis_Repository</RegCompRepository>
         <InheritedComponentState>
@@ -62159,6 +62357,14 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <Value />
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>InitializationEnabled</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Value>true</Value>
+        <Expanded>true</Expanded>
       </ItemState>
     </Properties>
     <Methods>
