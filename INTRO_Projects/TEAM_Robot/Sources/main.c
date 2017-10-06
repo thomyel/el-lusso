@@ -62,7 +62,6 @@
 #include "XF1.h"
 #include "UTIL1.h"
 #include "KIN1.h"
-#include "LED.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
@@ -85,6 +84,10 @@ int main(void)
   /*** End of Processor Expert internal initialization.                    ***/
 
   /* Write your code here */
+
+APP_Start();
+
+
   /* For example: for(;;) { } */
 #if 0
   f();
@@ -94,29 +97,9 @@ int main(void)
   }
 #endif
 
-  /*---------------Start SW03 LED Lab---------------------*/
-for(;;){
-	LED1_On();
-	LED2_On();
-	WAIT1_Waitms(1000);
-	LED1_Off();
-	LED2_Off();
-	WAIT1_Waitms(500);
-}
-  /*---------------End SW03 LED Lab----------------------*/
-
-  /*while(1){
-	  LEDPin1_SetVal();
-	    LEDPin2_SetVal();
-	    WAIT1_Waitms(1000);
-	    LEDPin1_ClrVal();
-	    LEDPin2_ClrVal();
-	    WAIT1_Waitms(1000);
-  }*/
 
 
 
-APP_Start();
 
   /*** Don't write any code pass this line, or it will be deleted during code generation. ***/
   /*** RTOS startup code. Macro PEX_RTOS_START is defined by the RTOS component. DON'T MODIFY THIS CODE!!! ***/
