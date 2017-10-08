@@ -1,0 +1,20 @@
+#######################################################
+#
+#	Tips and Tricks for Exam admission: Team el-lusso
+#
+#######################################################
+
+
+
+- Make sure before you start with the import procedure of the actually Processor Expert Component library, that isn't included an older version in Kinetis Design Studio.
+
+- To avoid synchronisation problems, through following steps:
+		User A
+		1. Save project in Kinetis Design Studio
+		2. Close project in Kinetis Design Studio (the programm make a physical data saving on disc)
+		3. Commit and Push changes with VCS
+		User B
+		4. Remove *.pe file in the shared project
+		5. Pull the current changes from User A
+
+		
