@@ -92,12 +92,6 @@ int main(void)
 
 
   /*** End of Processor Expert internal initialization.                    ***/
-  while(1){
-    	    LED1_On();
-    	    WAIT1_Waitms(1000);
-    	    LED1_Off();
-    	    WAIT1_Waitms(1000);
-      }
 
   APP_Start();
 

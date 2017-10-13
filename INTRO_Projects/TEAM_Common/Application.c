@@ -185,13 +185,17 @@ void APP_Start(void) {
   __asm volatile("cpsie i"); /* enable interrupts */
   for(;;) {
 	  /*---------------Start SW03 LED Lab---------------------*/
-		LED1_On();
+		/*LED1_On();
 		WAIT1_Waitms(300);
 		LED2_On();
 		WAIT1_Waitms(1000);
-		LED1_Off();
+		LED1_Off()
 		LED2_Off();
-		WAIT1_Waitms(500);
+		WAIT1_Waitms(500);*/
+	  EVNT_SetEvent(EVNT_STARTUP);
+	  WAIT1_Waitms(500);
+
+	  EVNT_HandleEvent(APP_EventHandler, 1);
 	  /*---------------End SW03 LED Lab----------------------*/
   }
 }
