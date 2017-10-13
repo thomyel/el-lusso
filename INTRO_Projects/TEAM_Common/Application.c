@@ -89,6 +89,7 @@ void APP_EventHandler(EVNT_Handle event) {
       }
       LED1_Off();
     }
+    break;
   case EVNT_LED_HEARTBEAT:
     LED2_Neg();
     break;
@@ -192,8 +193,8 @@ void APP_Start(void) {
 		LED1_Off()
 		LED2_Off();
 		WAIT1_Waitms(500);*/
-	  EVNT_SetEvent(EVNT_STARTUP);
-	  WAIT1_Waitms(500);
+
+	  WAIT1_Waitms(50);
 
 	  EVNT_HandleEvent(APP_EventHandler, 1);
 	  /*---------------End SW03 LED Lab----------------------*/

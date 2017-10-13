@@ -28,6 +28,7 @@
 
 #include "Cpu.h"
 #include "Events.h"
+#include "Event.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,6 +71,7 @@ void Cpu_OnNMIINT(void)
 */
 void TI1_OnInterrupt(void)
 {
+	EVNT_SetEvent(EVNT_STARTUP);
   /* Write your code here ... */
 }
 
