@@ -6,7 +6,7 @@
 
 
 
-- Make sure before you start with the import procedure of the actually Processor Expert Component library, that isn't included an older version in Kinetis Design Studio.
+- Make sure before you start with the import procedure of the actually Processor Expert Component library, should not an older version included in Kinetis Design Studio.
 
 - To avoid synchronisation problems, through following steps:
 		User A
