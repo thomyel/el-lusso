@@ -97,6 +97,24 @@ void APP_EventHandler(EVNT_Handle event) {
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
      break;
+  case EVNT_SW2_PRESSED:
+      BtnMsg(2, "pressed");
+       break;
+  case EVNT_SW3_PRESSED:
+      BtnMsg(3, "pressed");
+       break;
+  case EVNT_SW4_PRESSED:
+      BtnMsg(4, "pressed");
+       break;
+  case EVNT_SW5_PRESSED:
+      BtnMsg(5, "pressed");
+       break;
+  case EVNT_SW6_PRESSED:
+      BtnMsg(6, "pressed");
+       break;
+  case EVNT_SW7_PRESSED:
+        BtnMsg(7, "pressed");
+         break;
 #endif
     default:
       break;
@@ -193,7 +211,7 @@ void APP_Start(void) {
 		LED1_Off()
 		LED2_Off();
 		WAIT1_Waitms(500);*/
-
+	  KEY_Scan();
 	  WAIT1_Waitms(50);
 
 	  EVNT_HandleEvent(APP_EventHandler, 1);
