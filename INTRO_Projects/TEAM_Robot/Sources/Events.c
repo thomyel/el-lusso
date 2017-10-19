@@ -28,6 +28,7 @@
 
 #include "Cpu.h"
 #include "Events.h"
+#include "Timer.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -91,6 +92,7 @@ void QuadInt_OnInterrupt(void)
 void TI1_OnInterrupt(void)
 {
   /* Write your code here ... */
+	TMR_OnInterrupt();
 }
 
 /* END Events */

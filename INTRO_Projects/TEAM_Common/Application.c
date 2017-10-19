@@ -204,18 +204,25 @@ void APP_Start(void) {
   __asm volatile("cpsie i"); /* enable interrupts */
   for(;;) {
 	  /*---------------Start SW03 LED Lab---------------------*/
-		/*LED1_On();
-		WAIT1_Waitms(300);
-		LED2_On();
-		WAIT1_Waitms(1000);
-		LED1_Off()
-		LED2_Off();
-		WAIT1_Waitms(500);*/
-	  KEY_Scan();
-	  WAIT1_Waitms(50);
+	 		/*LED1_On();
+	 		WAIT1_Waitms(300);
+	 		LED2_On();
+	 		WAIT1_Waitms(1000);
+	 		LED1_Off()
+	 		LED2_Off();
+	 		WAIT1_Waitms(500);*/
+	 	  /*---------------End SW03 LED Lab----------------------*/
 
-	  EVNT_HandleEvent(APP_EventHandler, 1);
-	  /*---------------End SW03 LED Lab----------------------*/
+	 	  /*---------------End SW04 EventHandle Lab----------------------*/
+	 	  /*WAIT1_Waitms(50);
+	 	  EVNT_HandleEvent(APP_EventHandler, 1);*/
+	 	  /*---------------End SW04 EventHandle Lab----------------------*/
+
+	 	  /*---------------Start Lab: Assignment #15: Keys---------------*/
+	 	  KEY_Scan();
+	 	  EVNT_HandleEvent(APP_EventHandler, 1);
+
+	 	  /*---------------End   Lab: Assignment #15: Keys---------------*/
   }
 }
 
