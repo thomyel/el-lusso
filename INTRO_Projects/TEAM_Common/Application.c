@@ -96,7 +96,9 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
+    LED2_Neg();
      break;
+#if PL_CONFIG_NOF_KEYS>=2
   case EVNT_SW2_PRESSED:
       BtnMsg(2, "pressed");
        break;
@@ -115,6 +117,7 @@ void APP_EventHandler(EVNT_Handle event) {
   case EVNT_SW7_PRESSED:
         BtnMsg(7, "pressed");
          break;
+#endif
 #endif
     default:
       break;
