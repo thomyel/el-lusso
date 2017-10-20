@@ -23,9 +23,9 @@
 
 
 
-static unsigned int cntr = 0;
-void TMR_OnInterrupt(void) {
 
+void TMR_OnInterrupt(void) {
+	static unsigned int cntr = 0;
   cntr++;
     if (cntr==(1000/TMR_TICK_MS))  {
       EVNT_SetEvent(EVNT_LED_HEARTBEAT);
