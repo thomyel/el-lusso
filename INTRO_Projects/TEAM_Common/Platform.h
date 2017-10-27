@@ -22,8 +22,8 @@
     #define PL_CONFIG_BOARD_IS_ROBO_V1  (0)
     #define PL_CONFIG_BOARD_IS_ROBO_V2  (1)
   #else
-    #define PL_CONFIG_BOARD_IS_ROBO_V1  (1)
-    #define PL_CONFIG_BOARD_IS_ROBO_V2  (0)
+    #define PL_CONFIG_BOARD_IS_ROBO_V1  (0)
+    #define PL_CONFIG_BOARD_IS_ROBO_V2  (1)
   #endif
 #elif PL_LOCAL_CONFIG_BOARD_IS_FRDM
   #define PL_CONFIG_BOARD_IS_FRDM     (1)

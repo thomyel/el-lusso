@@ -29,11 +29,11 @@ static EVNT_MemUnit EVNT_Events[((EVNT_NOF_EVENTS-1)/EVNT_MEM_UNIT_NOF_BITS)+1];
 
 void EVNT_SetEvent(EVNT_Handle event) {
   /*! \todo Make it reentrant */
-  CS1_CriticalVariable();
-
-  CS1_EnterCritical();
+  CS1_CriticalVariable();//Wird festgehlaten, ob schon in einer kritischen Section oder nicht.
+  	  	  	  	  	  	 // Wenn ja,dann wird bei ExitCritical die kritische Section nicht verlassen.
+  CS1_EnterCritical();	 // Wenn nein, dann wird die kritische Section bei ExitCritical verlassen.
   SET_EVENT(event);
-  CS1_ExitCritical();
+  CS1_ExitCritical(); // Eine Ebene retour
 }
 
 void EVNT_ClearEvent(EVNT_Handle event) {
