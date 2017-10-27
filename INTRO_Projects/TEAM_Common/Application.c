@@ -96,6 +96,7 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
+    BUZ_Beep(500,1000);
     LED2_Neg();
      break;
 #if PL_CONFIG_NOF_KEYS>=2
@@ -226,6 +227,7 @@ void APP_Start(void) {
 	 	  EVNT_HandleEvent(APP_EventHandler, 1);
 
 	 	  /*---------------End   Lab: Assignment #15: Keys---------------*/
+
   }
 }
 

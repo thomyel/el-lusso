@@ -26,6 +26,7 @@
 
 void TMR_OnInterrupt(void) {
 	static unsigned int cntr = 0;
+	TRG_AddTick();
   cntr++;
     if (cntr==(1000/TMR_TICK_MS))  {
       EVNT_SetEvent(EVNT_LED_HEARTBEAT);
