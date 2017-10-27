@@ -30,6 +30,7 @@
 #include "Events.h"
 #include "Event.h"
 #include "Timer.h"
+#include "Keys.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -74,6 +75,24 @@ void TI1_OnInterrupt(void)
 {
 	TMR_OnInterrupt();
 
+}
+
+/*
+** ===================================================================
+**     Event       :  SW1_OnInterrupt (module Events)
+**
+**     Component   :  SW1 [ExtInt]
+**     Description :
+**         This event is called when an active signal edge/level has
+**         occurred.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void SW1_OnInterrupt(void)
+{
+	KEY_OnInterrupt(KEY_BTN1);
+  /* Write your code here ... */
 }
 
 /* END Events */
