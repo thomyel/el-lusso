@@ -96,7 +96,9 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
     BtnMsg(1, "pressed");
+#if PL_CONFIG_HAS_BUZZER
     BUZ_Beep(500,1000);
+#endif
     LED2_Neg();
      break;
 #if PL_CONFIG_NOF_KEYS>=2
