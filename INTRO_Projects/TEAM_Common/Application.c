@@ -224,11 +224,23 @@ void APP_Start(void) {
 	 	  EVNT_HandleEvent(APP_EventHandler, 1);*/
 	 	  /*---------------End SW04 EventHandle Lab----------------------*/
 
-	 	  /*---------------Start Lab: Assignment #15: Keys---------------*/
-	 	  KEY_Scan();
-	 	  EVNT_HandleEvent(APP_EventHandler, 1);
+
+	 	  /*KEY_Scan();
+	 	  EVNT_HandleEvent(APP_EventHandler, 1);*/
 
 	 	  /*---------------End   Lab: Assignment #15: Keys---------------*/
+
+	      /*---------------Debouncing SW06---------------*/
+				#if PL_CONFIG_HAS_DEBOUNCE
+	  	  	 	    KEYDBNC_Process();
+	  	  	 	#else
+	  	  	 	    KEY_Scan(); /* scan keys and set events */
+	  	  	 	#endif
+
+	  	 	  EVNT_HandleEvent(APP_EventHandler, 1);
+
+	  	  /*---------------Debouncing SW06---------------*/
+
 
   }
 }
