@@ -267,6 +267,7 @@ static void APP_AdoptToHardware(void) {
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
+
   __asm volatile("cpsie i"); /* enable interrupts */
   for(;;) {
 	  /*---------------Start SW03 LED Lab---------------------*/
