@@ -22,7 +22,7 @@ typedef struct TRG_TriggerDesc {
 static TRG_TriggerDesc TRG_Triggers[TRG_NOF_TRIGGERS];  /*!< Array of triggers */
 
 uint8_t TRG_SetTrigger(TRG_TriggerKind trigger, TRG_TriggerTime ticks, TRG_Callback callback, TRG_CallBackDataPtr data) {
-  CS1_CriticalVariable()
+  CS1_CriticalVariable();
   
   CS1_EnterCritical();
   TRG_Triggers[trigger].ticks = ticks;

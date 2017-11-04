@@ -12,26 +12,37 @@
 #include "LED.h"
 
 static void BlinkyTask(void *pvParameters) {
-	for (;;) {
+
+	/*//Blinky Task with vTaskDealy	 --> 	// - avoid starving other tasks
+	for (;;) {							    // - set number of ticks from current tick count
 		LED1_Neg();
-		vTaskDelay (500/ portTICK_PERIOD_MS) ;
-	}
+		vTaskDelay(500/portTICK_PERIOD_MS);
+	}//*/
+
+	//Blinky Task with vTaskDelayUntil -->	// - avoid starving other tasks and stored the heap adress
+	TickType_t xLastWakeTime = xTaskGetTickCount();				// - return current tick counter
+	for(;;) {
+		LED1_Neg();
+		vTaskDelayUntil(&xLastWakeTime, 50/portTICK_PERIOD_MS); // - can delay from previous tick counter
+	}//*/								//pdMS_TO_TICKS(50)		// - independent of task overhead
 }
 
 void RTOS_Init(void) {
   /*! \todo Create tasks here */
-	BaseType_t res ;
-	xTaskHandle taskHndl ;
-	res = xTaskCreate(BlinkyTask, 	// f u n c t i o n
-	"Blinky", 						// Kernel awareness name
-	configMINIMAL_STACK_SIZE+50, // stack
-	(void*)NULL, 		// task parameter
-	tskIDLE_PRIORITY, 	// p r i o r i t y
-	&taskHndl); 			// handle
 
-	if (res !=pdPASS) { /* e r r o r handl ing here */ }
+	BaseType_t res;
+	xTaskHandle taskHndl;
 
-	vTaskStartScheduler();
+	res = xTaskCreate(BlinkyTask, 	// Task Function
+	"Blinky", 						// Debug Name (for Kernel)
+	configMINIMAL_STACK_SIZE+50, 	// Stack size
+	(void*)NULL, 					// Optional task parameter or NULL
+	tskIDLE_PRIORITY, 				// Priority
+	&taskHndl); 					// Task handling
+
+	if (res !=pdPASS) { /*error handling here*/ }
+
+	vTaskStartScheduler();			// Start Scheduler
 }
 
 
