@@ -16,5 +16,6 @@
 		User B
 		4. Remove *.pe file in the shared project
 		5. Pull the current changes from User A
-
+		
+		tt
 		
