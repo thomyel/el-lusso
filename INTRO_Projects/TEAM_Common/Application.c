@@ -264,6 +264,37 @@ static void APP_AdoptToHardware(void) {
 #endif
 }
 
+static void BlinkyTask(void *pvParameters) {
+
+	/*//Blinky Task with vTaskDealy	 --> 	// - avoid starving other tasks
+	for (;;) {							    // - set number of ticks from current tick count
+		LED1_Neg();
+		vTaskDelay(500/portTICK_PERIOD_MS);
+	}//*/
+
+	//Blinky Task with vTaskDelayUntil -->	// - avoid starving other tasks and stored the heap adress
+	TickType_t xLastWakeTime = xTaskGetTickCount();				// - return current tick counter
+	for(;;) {
+		LED1_Neg();
+		vTaskDelayUntil(&xLastWakeTime, 50/portTICK_PERIOD_MS); // - can delay from previous tick counter
+	}//*/								//pdMS_TO_TICKS(50)		// - independent of task overhead
+}
+
+static void MyAppTask(void *pvParam) {
+  for(;;) {
+#if PL_CONFIG_HAS_DEBOUNCE
+    KEYDBNC_Process();
+#else
+    KEY_Scan(); /* scan keys and set events */
+#endif
+    WAIT1_WaitOSms(50);
+    EVNT_HandleEvent(APP_EventHandler, TRUE);
+    vTaskDelay(pdMS_TO_TICKS(10));
+  }
+}
+
+
+
 void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
@@ -292,16 +323,33 @@ void APP_Start(void) {
 	 	  /*---------------End   Lab: Assignment #15: Keys---------------*/
 
 	      /*---------------Debouncing SW06---------------*/
-				#if PL_CONFIG_HAS_DEBOUNCE
+			/*	#if PL_CONFIG_HAS_DEBOUNCE
 	  	  	 	    KEYDBNC_Process();
 	  	  	 	#else
 	  	  	 	    KEY_Scan(); /* scan keys and set events */
-	  	  	 	#endif
+	  	  	/* 	#endif
 
-	  	 	  EVNT_HandleEvent(APP_EventHandler, 1);
+	  	 	  EVNT_HandleEvent(APP_EventHandler, 1);*/
 
 	  	  /*---------------Debouncing SW06---------------*/
 
+	   BaseType_t res;
+	  	xTaskHandle taskHndl;
+
+	  	res = xTaskCreate(BlinkyTask, 	// Task Function
+	  	"Blinky", 						// Debug Name (for Kernel)
+	  	configMINIMAL_STACK_SIZE+50, 	// Stack size
+	  	(void*)NULL, 					// Optional task parameter or NULL
+	  	tskIDLE_PRIORITY+1, 				// Priority
+	  	&taskHndl); 					// Task handling
+
+	  	if (res !=pdPASS) { /*error handling here*/ }
+
+	  	if (xTaskCreate(MyAppTask, "App", configMINIMAL_STACK_SIZE+100, NULL, tskIDLE_PRIORITY, NULL)!=pdPASS) {
+	  	    for(;;) {} /* error? */
+	  	 }
+
+	  	vTaskStartScheduler();			// Start Scheduler
 
   }
 }
