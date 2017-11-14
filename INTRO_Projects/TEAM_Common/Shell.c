@@ -369,6 +369,7 @@ static void ShellTask(void *pvParameters) {
   /*! \todo Extend as needed */
 
   (void)pvParameters; /* not used */
+
   /* initialize buffers */
   for(i=0;i<sizeof(ios)/sizeof(ios[0]);i++) {
     ios[i].buf[0] = '\0';
@@ -386,13 +387,25 @@ static void ShellTask(void *pvParameters) {
 #if PL_CONFIG_HAS_SHELL_QUEUE && PL_CONFIG_SQUEUE_SINGLE_CHAR
     {
         /*! \todo Handle shell queue */
+    	unsigned char ch;
+
+    	while((ch=SQUEUE_ReceiveChar()) && ch!='\0') {
+    		ios[0].stdio->stdOut(ch); /* output on first channel */
+    	}
     }
 #elif PL_CONFIG_HAS_SHELL_QUEUE /* !PL_CONFIG_SQUEUE_SINGLE_CHAR */
     {
       /*! \todo Handle shell queue */
+      const unsigned char *msg;
+
+      msg = SQUEUE_ReceiveMessage();
+      if(msg!=NULL){
+    	  CLS1_SendStr(msg, ios[0].stdio->stdOut);
+    	  vPortFree((void*)msg);
+      }
    }
 #endif /* PL_CONFIG_HAS_SHELL_QUEUE */
-    vTaskDelay(pdMS_TO_TICKS(10));
+    vTaskDelay(pdMS_TO_TICKS(25));
   } /* for */
 }
 #endif /* PL_CONFIG_HAS_RTOS */

@@ -181,7 +181,6 @@ void APP_EventHandler(EVNT_Handle event) {
           BtnMsg(7, "released");
           break;
 #endif
-
     default:
       break;
    } /* switch */
@@ -276,8 +275,9 @@ static void BlinkyTask(void *pvParameters) {
 	TickType_t xLastWakeTime = xTaskGetTickCount();				// - return current tick counter
 	for(;;) {
 		LED1_Neg();
-		vTaskDelayUntil(&xLastWakeTime, 50/portTICK_PERIOD_MS); // - can delay from previous tick counter
-	}//*/								//pdMS_TO_TICKS(50)		// - independent of task overhead
+		//vTaskDelayUntil(&xLastWakeTime, 50/portTICK_PERIOD_MS);   // - can delay from previous tick counter
+		vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(100));		   // - independent of task overhead
+	}//*/
 }
 
 static void MyAppTask(void *pvParam) {
@@ -287,7 +287,7 @@ static void MyAppTask(void *pvParam) {
 #else
     KEY_Scan(); /* scan keys and set events */
 #endif
-    WAIT1_WaitOSms(50);
+    //WAIT1_WaitOSms(50);
     EVNT_HandleEvent(APP_EventHandler, TRUE);
     vTaskDelay(pdMS_TO_TICKS(10));
   }
@@ -300,6 +300,31 @@ void APP_Start(void) {
   APP_AdoptToHardware();
 
   __asm volatile("cpsie i"); /* enable interrupts */
+
+
+  /*------------------------------RTOS SW07---------------------------------*/
+  //Task Creation Blinky LED
+  BaseType_t res;						// local Variables
+  xTaskHandle taskHndl;					// local taskHandler
+
+  res = xTaskCreate(BlinkyTask, 		// Task Function commit to local variables with required parameters, Function Name
+		  "Blinky", 					// Debug Name (for Kernel)
+		  configMINIMAL_STACK_SIZE+50, 	// Stack size
+		  (void*)NULL, 					// Optional task parameter or NULL
+		  tskIDLE_PRIORITY+1, 			// Task priority
+		  &taskHndl); 					// Task handling
+
+  if (res !=pdPASS) { /*error handling here*/ } // The task creation wasn't successful? --> error Handling
+
+  if (xTaskCreate(MyAppTask, "App", configMINIMAL_STACK_SIZE+100, NULL, tskIDLE_PRIORITY, NULL)!=pdPASS) {
+	  for(;;) {} /* error? */
+  }//if (xTaskCreate)
+
+  vTaskStartScheduler();				// Start Scheduler
+
+  /*------------------------------RTOS SW07---------------------------------*/
+
+
   for(;;) {
 	  /*---------------Start SW03 LED Lab---------------------*/
 	 		/*LED1_On();
@@ -311,19 +336,24 @@ void APP_Start(void) {
 	 		WAIT1_Waitms(500);*/
 	 	  /*---------------End SW03 LED Lab----------------------*/
 
+
 	 	  /*---------------End SW04 EventHandle Lab----------------------*/
 	 	  /*WAIT1_Waitms(50);
 	 	  EVNT_HandleEvent(APP_EventHandler, 1);*/
 	 	  /*---------------End SW04 EventHandle Lab----------------------*/
 
 
-	 	  /*KEY_Scan();
+	  	  /*---------------End   Lab: Assignment #15: Keys---------------*/
+
+	  	  /*KEY_Scan();
 	 	  EVNT_HandleEvent(APP_EventHandler, 1);*/
 
 	 	  /*---------------End   Lab: Assignment #15: Keys---------------*/
 
+
 	      /*---------------Debouncing SW06---------------*/
-			/*	#if PL_CONFIG_HAS_DEBOUNCE
+
+	  /*	#if PL_CONFIG_HAS_DEBOUNCE
 	  	  	 	    KEYDBNC_Process();
 	  	  	 	#else
 	  	  	 	    KEY_Scan(); /* scan keys and set events */
@@ -333,25 +363,10 @@ void APP_Start(void) {
 
 	  	  /*---------------Debouncing SW06---------------*/
 
-	   BaseType_t res;
-	  	xTaskHandle taskHndl;
 
-	  	res = xTaskCreate(BlinkyTask, 	// Task Function
-	  	"Blinky", 						// Debug Name (for Kernel)
-	  	configMINIMAL_STACK_SIZE+50, 	// Stack size
-	  	(void*)NULL, 					// Optional task parameter or NULL
-	  	tskIDLE_PRIORITY+1, 				// Priority
-	  	&taskHndl); 					// Task handling
-
-	  	if (res !=pdPASS) { /*error handling here*/ }
-
-	  	if (xTaskCreate(MyAppTask, "App", configMINIMAL_STACK_SIZE+100, NULL, tskIDLE_PRIORITY, NULL)!=pdPASS) {
-	  	    for(;;) {} /* error? */
-	  	 }
-
-	  	vTaskStartScheduler();			// Start Scheduler
 
   }
 }
+
 
 

@@ -16,14 +16,14 @@
 
 void RTOS_Init(void) {
   /*! \todo Create tasks here */
-
-
+	/*Task was created in Application.c File*/
+	/* This function needs for a simple Task implementation - on beginning state*/
 }
-
 
 
 void RTOS_Deinit(void) {
   /* nothing needed for now */
 }
+
 
 #endif /* PL_CONFIG_HAS_RTOS */

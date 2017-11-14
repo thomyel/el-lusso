@@ -71,7 +71,7 @@ unsigned char *SQUEUE_ReceiveMessage(void) {
 #endif /* QUEUE_SINGLE_CHAR */
 
 unsigned short SQUEUE_NofElements(void) {
-  return (unsigned short)uxQueueMessagesWaiting(SQUEUE_Queue);
+  return (unsigned short)uxQueueMessagesWaiting(SQUEUE_Queue); //Wieviele Elemente sind in der Queue abfragen
 }
 
 void SQUEUE_Deinit(void) {
