@@ -102,6 +102,7 @@ void APP_EventHandler(EVNT_Handle event) {
     BUZ_Beep(500,1000);
 #endif
     LED2_Neg();
+    REF_CalibrateStartStop();
      break;
   case EVNT_SW1_LPRESSED:
        BtnMsg(1, "long pressed");
@@ -189,9 +190,9 @@ void APP_EventHandler(EVNT_Handle event) {
 
 #if PL_CONFIG_HAS_MOTOR /* currently only used for robots */
 static const KIN1_UID RoboIDs[] = {
-				   {{0x00,0x0E,0x00,0x00,0x67,0xCD,0xB8,0x21,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
+  /* 0: L34, V2 */ {{0x00,0x0E,0x00,0x00,0x67,0xCD,0xB8,0x21,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
   /* 0: L20, V2 */ /*{{0x00,0x03,0x00,0x00,0x67,0xCD,0xB7,0x21,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
-  /* 1: L21, V2 */ {{0x00,0x05,0x00,0x00,0x4E,0x45,0xB7,0x21,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
+  /* 1: L14, V2 */ {{0x00,0x30,0x00,0x00,0x67,0xCD,0xB6,0x31,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
   /* 2: L4, V1  */ {{0x00,0x0B,0xFF,0xFF,0x4E,0x45,0xFF,0xFF,0x4E,0x45,0x27,0x99,0x10,0x02,0x00,0x24}},
   /* 3: L23, V2 */ {{0x00,0x0A,0x00,0x00,0x67,0xCD,0xB8,0x21,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
   /* 4: L11, V2 */ {{0x00,0x19,0x00,0x00,0x67,0xCD,0xB9,0x11,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
@@ -217,7 +218,8 @@ static void APP_AdoptToHardware(void) {
     MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_LEFT), TRUE); /* invert left motor */
     MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), FALSE); /* invert rigth motor */
   } else if (KIN1_UIDSame(&id, &RoboIDs[1])) { /* V2 L21 */
-    /* no change needed */
+	 MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), TRUE); /* invert rigth motor */
+
   } else if (KIN1_UIDSame(&id, &RoboIDs[2])) { /* V1 L4 */
     MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_LEFT), TRUE); /* revert left motor */
 #if PL_CONFIG_HAS_QUADRATURE
@@ -265,7 +267,6 @@ static void APP_AdoptToHardware(void) {
 }
 
 static void BlinkyTask(void *pvParameters) {
-
 	/*//Blinky Task with vTaskDealy	 --> 	// - avoid starving other tasks
 	for (;;) {							    // - set number of ticks from current tick count
 		LED1_Neg();
@@ -293,7 +294,65 @@ static void MyAppTask(void *pvParam) {
     vTaskDelay(pdMS_TO_TICKS(10));
   }
 }
+#if PL_CONFIG_HAS_MOTOR
+static void DriveTask(void *pvParam) {
 
+	MOT_MotorDevice motorLeft;
+	MOT_MotorDevice motorRight;
+
+
+	motorLeft = *MOT_GetMotorHandle(MOT_MOTOR_LEFT);
+	motorRight = *MOT_GetMotorHandle(MOT_MOTOR_RIGHT);
+
+	for(;;) {
+		if(REF_IsReady())
+		{
+			MOT_SetSpeedPercent(&motorLeft, 20);
+			MOT_SetSpeedPercent(&motorRight, 20);
+		//int x = REF_GetLineValue();
+		REF_LineKind r = REF_GetLineKind();
+			/*
+		if(r == REF_LINE_FULL)
+		{
+			MOT_SetDirection(&motorLeft, MOT_DIR_FORWARD);
+		    MOT_SetDirection(&motorRight, MOT_DIR_FORWARD);
+		}
+		else
+		{
+			MOT_SetDirection(&motorLeft, MOT_DIR_BACKWARD);
+			MOT_SetDirection(&motorRight, MOT_DIR_FORWARD);
+		}
+		*/
+
+			if(r == REF_LINE_STRAIGHT)
+				{
+					MOT_SetSpeedPercent(&motorLeft, 70);
+					MOT_SetSpeedPercent(&motorRight, 70);
+				}
+				else if(r == REF_LINE_LEFT)
+				{
+					MOT_SetDirection(&motorLeft, MOT_DIR_BACKWARD);
+					MOT_SetDirection(&motorRight, MOT_DIR_FORWARD);
+				}
+				else if(r == REF_LINE_RIGHT)
+				{
+					MOT_SetDirection(&motorLeft, MOT_DIR_FORWARD);
+					MOT_SetDirection(&motorRight, MOT_DIR_BACKWARD);
+				}
+				else{
+
+					MOT_SetDirection(&motorLeft, MOT_DIR_BACKWARD);
+					MOT_SetDirection(&motorRight, MOT_DIR_FORWARD);
+				}
+
+
+
+		}
+
+    vTaskDelay(pdMS_TO_TICKS(10));
+  }
+}
+#endif
 
 
 void APP_Start(void) {
@@ -320,7 +379,11 @@ void APP_Start(void) {
   if (xTaskCreate(MyAppTask, "App", configMINIMAL_STACK_SIZE+100, NULL, tskIDLE_PRIORITY, NULL)!=pdPASS) {
 	  for(;;) {} /* error? */
   }//if (xTaskCreate)
-
+#if PL_CONFIG_HAS_MOTOR
+  if (xTaskCreate(DriveTask, "App", configMINIMAL_STACK_SIZE+100, NULL, tskIDLE_PRIORITY, NULL)!=pdPASS) {
+  	  for(;;) {} /* error? */
+    }
+#endif
   vTaskStartScheduler();				// Start Scheduler
 
   /*------------------------------RTOS SW07---------------------------------*/

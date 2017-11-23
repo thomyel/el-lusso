@@ -168,7 +168,7 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
         cnt++;
       }
     }/*for*/
-  } while(cnt!=REF_NOF_SENSORS);
+  } while((cnt!=REF_NOF_SENSORS)&&(timerVal < 0x0800));
   taskEXIT_CRITICAL();
   LED_IR_Off(); /* IR LED's off */ // Ausschalten, für Strom sparen
   (void)xSemaphoreGive(REF_StartStopMutex); /* empty token */
@@ -579,7 +579,7 @@ static void ReflTask (void *pvParameters) {
   (void)pvParameters; /* not used */
   for(;;) {
     REF_StateMachine();
-    FRTOS1_vTaskDelay(10/portTICK_PERIOD_MS);
+    vTaskDelay(pdMS_TO_TICKS(10));
   }
 }
 
