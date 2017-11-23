@@ -38,6 +38,7 @@
 #define REF_START_STOP_CALIB      1 /* start/stop calibration commands */
 #if REF_START_STOP_CALIB
   static xSemaphoreHandle REF_StartStopSem = NULL;
+  static xSemaphoreHandle REF_StartStopMutex = NULL;
 #endif
 
 typedef enum {
@@ -141,7 +142,7 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
   uint8_t i;
   RefCnt_TValueType timerVal;
   /*! \todo Consider reentrancy and mutual exclusion! */
-
+  (void)xSemaphoreTake(REF_StartStopMutex, 0); /* empty token */
   LED_IR_On(); /* IR LED's on */
   WAIT1_Waitus(200);
   taskENTER_CRITICAL();
@@ -160,16 +161,18 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
     cnt = 0;
     for(i=0;i<REF_NOF_SENSORS;i++) {
       if (raw[i]==MAX_SENSOR_VALUE) { /* not measured yet? */
-        if (SensorFctArray[i].GetVal()==0) {
+        if (SensorFctArray[i].GetVal()==0) { //Bis Kondensator für Sensor  Vcc/2 erreicht hat, dann speichere Zeit
           raw[i] = (uint16_t)timerVal;
-        }
+        }/*if*/
       } else { /* have value */
         cnt++;
       }
-    }
+    }/*for*/
   } while(cnt!=REF_NOF_SENSORS);
   taskEXIT_CRITICAL();
-  LED_IR_Off(); /* IR LED's off */
+  LED_IR_Off(); /* IR LED's off */ // Ausschalten, für Strom sparen
+  (void)xSemaphoreGive(REF_StartStopMutex); /* empty token */
+
 }
 
 static void REF_CalibrateMinMax(SensorTimeType min[REF_NOF_SENSORS], SensorTimeType max[REF_NOF_SENSORS], SensorTimeType raw[REF_NOF_SENSORS]) {
@@ -339,7 +342,7 @@ REF_LineKind REF_GetLineKind(void) {
 static void REF_Measure(void) {
   ReadCalibrated(SensorCalibrated, SensorRaw);
   refCenterLineVal = ReadLine(SensorCalibrated, SensorRaw, REF_USE_WHITE_LINE);
-#if 1 || PL_CONFIG_HAS_LINE_FOLLOW
+#if 1 || PL_CONFIG_HAS_LINE_FOLLOW //Abfrage ob es eine weitere Linie hat oder nicht
   refLineKind = ReadLineKind(SensorCalibrated);
 #endif
 }
@@ -586,6 +589,7 @@ void REF_Deinit(void) {
 void REF_Init(void) {
 #if REF_START_STOP_CALIB
   vSemaphoreCreateBinary(REF_StartStopSem);
+  REF_StartStopMutex = xSemaphoreCreateMutex();
   if (REF_StartStopSem==NULL) { /* semaphore creation failed */
     for(;;){} /* error */
   }
@@ -596,7 +600,7 @@ void REF_Init(void) {
   refState = REF_STATE_INIT;
   timerHandle = RefCnt_Init(NULL);
   /*! \todo You might need to adjust priority or other task settings */
-  if (xTaskCreate(ReflTask, "Refl", 600/sizeof(StackType_t), NULL, tskIDLE_PRIORITY, NULL) != pdPASS) {
+  if (xTaskCreate(ReflTask, "Refl", 600/sizeof(StackType_t), NULL, (tskIDLE_PRIORITY+2), NULL) != pdPASS) {
     for(;;){} /* error */
   }
 }

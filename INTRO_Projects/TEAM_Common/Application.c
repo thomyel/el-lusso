@@ -189,7 +189,8 @@ void APP_EventHandler(EVNT_Handle event) {
 
 #if PL_CONFIG_HAS_MOTOR /* currently only used for robots */
 static const KIN1_UID RoboIDs[] = {
-  /* 0: L20, V2 */ {{0x00,0x03,0x00,0x00,0x67,0xCD,0xB7,0x21,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
+				   {{0x00,0x0E,0x00,0x00,0x67,0xCD,0xB8,0x21,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
+  /* 0: L20, V2 */ /*{{0x00,0x03,0x00,0x00,0x67,0xCD,0xB7,0x21,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
   /* 1: L21, V2 */ {{0x00,0x05,0x00,0x00,0x4E,0x45,0xB7,0x21,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
   /* 2: L4, V1  */ {{0x00,0x0B,0xFF,0xFF,0x4E,0x45,0xFF,0xFF,0x4E,0x45,0x27,0x99,0x10,0x02,0x00,0x24}},
   /* 3: L23, V2 */ {{0x00,0x0A,0x00,0x00,0x67,0xCD,0xB8,0x21,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
@@ -214,7 +215,7 @@ static void APP_AdoptToHardware(void) {
     (void)Q4CRight_SwapPins(TRUE);
 #endif
     MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_LEFT), TRUE); /* invert left motor */
-    MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), TRUE); /* invert left motor */
+    MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), FALSE); /* invert rigth motor */
   } else if (KIN1_UIDSame(&id, &RoboIDs[1])) { /* V2 L21 */
     /* no change needed */
   } else if (KIN1_UIDSame(&id, &RoboIDs[2])) { /* V1 L4 */
@@ -228,7 +229,7 @@ static void APP_AdoptToHardware(void) {
     (void)Q4CRight_SwapPins(TRUE);
 #endif
     MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_LEFT), TRUE); /* invert left motor */
-    MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), TRUE); /* invert left motor */
+    MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), FALSE); /* invert rigth motor */
   } else if (KIN1_UIDSame(&id, &RoboIDs[4])) { /* L11 */
 #if PL_CONFIG_HAS_QUADRATURE
     (void)Q4CRight_SwapPins(TRUE);
@@ -353,7 +354,7 @@ void APP_Start(void) {
 
 	      /*---------------Debouncing SW06---------------*/
 
-	  /*	#if PL_CONFIG_HAS_DEBOUNCE
+	  	  /*#if PL_CONFIG_HAS_DEBOUNCE
 	  	  	 	    KEYDBNC_Process();
 	  	  	 	#else
 	  	  	 	    KEY_Scan(); /* scan keys and set events */
@@ -362,9 +363,6 @@ void APP_Start(void) {
 	  	 	  EVNT_HandleEvent(APP_EventHandler, 1);*/
 
 	  	  /*---------------Debouncing SW06---------------*/
-
-
-
   }
 }
 
