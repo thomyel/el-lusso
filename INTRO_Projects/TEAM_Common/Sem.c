@@ -46,6 +46,7 @@ static void vMasterTask(void *pvParameters) {
 }
 
 void SEM_Deinit(void) {
+
 }
 
 /*! \brief Initializes module */
