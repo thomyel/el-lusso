@@ -27,11 +27,15 @@
 void TMR_OnInterrupt(void) {
 	static unsigned int cntr = 0;
 	TRG_AddTick();
-  cntr++;
+    cntr++;
     if (cntr==(1000/TMR_TICK_MS))  {
       EVNT_SetEvent(EVNT_LED_HEARTBEAT);
       cntr = 0; /* reset */
     }
+
+	#if PL_CONFIG_HAS_MOTOR_TACHO
+    TACHO_Sample();
+	#endif
 }
 
 void TMR_Init(void) {

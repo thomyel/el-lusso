@@ -14,8 +14,8 @@
 #define LAB_15_KEYS (0)
 #define LAB_18_DEBOUNCING (0)
 #define LAB_19_FRTOS (0)
-#define LAB_21_TASK (1)
-#define LAB_27_SENSOR (1)
+#define LAB_21_TASK (0)
+#define LAB_27_SENSOR (0)
 
 #include "Platform.h"
 #include "Application.h"
@@ -108,9 +108,9 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
 	case EVNT_SW1_PRESSED:
 		BtnMsg(1, "pressed");
-#if PL_CONFIG_HAS_BUZZER
+		#if PL_CONFIG_HAS_BUZZER
 		BUZ_Beep(500, 1000);
-#endif
+		#endif
 		LED2_Neg();
 		#if PL_CONFIG_HAS_MOTOR
 		REF_CalibrateStartStop();
@@ -331,8 +331,8 @@ static void DriveTask(void *pvParam) {
 	for (;;) {
 	#if 1
 		if (REF_IsReady()) {
-			MOT_SetSpeedPercent(&motorLeft, 20);
-			MOT_SetSpeedPercent(&motorRight, 20);
+			MOT_SetSpeedPercent(&motorLeft, 50);
+			MOT_SetSpeedPercent(&motorRight, 50);
 			//int x = REF_GetLineValue();
 			REF_LineKind r = REF_GetLineKind();
 
@@ -342,6 +342,7 @@ static void DriveTask(void *pvParam) {
 			} else {
 				MOT_SetDirection(&motorLeft, MOT_DIR_BACKWARD);
 				MOT_SetDirection(&motorRight, MOT_DIR_FORWARD);
+				vTaskDelay(pdMS_TO_TICKS(200));
 			}
 	#endif
 	#if 0
@@ -401,7 +402,9 @@ void APP_Start(void) {
 		if (xTaskCreate(MyAppTask, "App", configMINIMAL_STACK_SIZE + 100, NULL, tskIDLE_PRIORITY, NULL) != pdPASS) {
 			for (;;) {/* error? */}
 		}
+		#if 0
 		vTaskStartScheduler(); // Start Scheduler
+		#endif
 	#endif /* End Lab 21 */
 
 
