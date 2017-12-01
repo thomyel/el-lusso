@@ -232,7 +232,9 @@ static void APP_AdoptToHardware(void) {
 		MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), TRUE); /* invert rigth motor */
 	} else if (KIN1_UIDSame(&id, &RoboIDs[1])) { /* V2 L21 */
 		MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), TRUE); /* invert rigth motor */
-
+#if PL_CONFIG_HAS_QUADRATURE
+    (void)Q4CRight_SwapPins(TRUE);
+#endif
 	} else if (KIN1_UIDSame(&id, &RoboIDs[2])) { /* V1 L4 */
 		MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_LEFT), TRUE); /* revert left motor */
 #if PL_CONFIG_HAS_QUADRATURE
