@@ -14,8 +14,8 @@
 #define LAB_15_KEYS (0)
 #define LAB_18_DEBOUNCING (0)
 #define LAB_19_FRTOS (0)
-#define LAB_21_TASK (0)
-#define LAB_27_SENSOR (0)
+#define LAB_21_TASK (1)
+#define LAB_27_SENSOR (1)
 
 #include "Platform.h"
 #include "Application.h"
@@ -197,7 +197,7 @@ void APP_EventHandler(EVNT_Handle event) {
 	default:
 		break;
 	} /* switch */
-}
+} /* APP_EventHandler */
 #endif /* PL_CONFIG_HAS_EVENTS */
 
 #if PL_CONFIG_HAS_MOTOR /* currently only used for robots */
@@ -232,9 +232,9 @@ static void APP_AdoptToHardware(void) {
 		MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), TRUE); /* invert rigth motor */
 	} else if (KIN1_UIDSame(&id, &RoboIDs[1])) { /* V2 L21 */
 		MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), TRUE); /* invert rigth motor */
-#if PL_CONFIG_HAS_QUADRATURE
+	#if PL_CONFIG_HAS_QUADRATURE
     (void)Q4CRight_SwapPins(TRUE);
-#endif
+	#endif
 	} else if (KIN1_UIDSame(&id, &RoboIDs[2])) { /* V1 L4 */
 		MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_LEFT), TRUE); /* revert left motor */
 #if PL_CONFIG_HAS_QUADRATURE
@@ -331,7 +331,7 @@ static void DriveTask(void *pvParam) {
 	motorRight = *MOT_GetMotorHandle(MOT_MOTOR_RIGHT);
 
 	for (;;) {
-	#if 1
+	#if 0
 		if (REF_IsReady()) {
 			MOT_SetSpeedPercent(&motorLeft, 50);
 			MOT_SetSpeedPercent(&motorRight, 50);
@@ -361,8 +361,8 @@ static void DriveTask(void *pvParam) {
 				MOT_SetDirection(&motorLeft, MOT_DIR_BACKWARD);
 				MOT_SetDirection(&motorRight, MOT_DIR_FORWARD);
 			}
-	#endif
 		}
+	#endif
 	vTaskDelay(pdMS_TO_TICKS(10));
 	}
 #endif /* ROBO_USE_TEL */
