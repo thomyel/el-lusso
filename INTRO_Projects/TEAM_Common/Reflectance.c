@@ -34,7 +34,7 @@
 #define REF_SENSOR1_IS_LEFT   1 /* sensor number one is on the left side */
 #define REF_MIN_NOISE_VAL     0x40   /* values below this are not added to the weighted sum */
 #define REF_USE_WHITE_LINE    0  /* if set to 1, then the robot is using a white (on black) line, otherwise a black (on white) line */
-
+#define REF_MAX_TIMEVAL 	  0x0800//60000
 #define REF_START_STOP_CALIB      1 /* start/stop calibration commands */
 #if REF_START_STOP_CALIB
   static xSemaphoreHandle REF_StartStopSem = NULL;
@@ -168,7 +168,7 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
         cnt++;
       }
     }/*for*/
-  } while((cnt!=REF_NOF_SENSORS)&&(timerVal < 0x0800));
+  } while((cnt!=REF_NOF_SENSORS)&&(timerVal <REF_MAX_TIMEVAL));
   taskEXIT_CRITICAL();
   LED_IR_Off(); /* IR LED's off */ // Ausschalten, für Strom sparen
   (void)xSemaphoreGive(REF_StartStopMutex); /* empty token */

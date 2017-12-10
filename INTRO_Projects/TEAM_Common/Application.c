@@ -16,6 +16,7 @@
 #define LAB_19_FRTOS (0)
 #define LAB_21_TASK (1)
 #define LAB_27_SENSOR (1)
+#define LAB_34_TURN (0)
 
 #include "Platform.h"
 #include "Application.h"
@@ -47,6 +48,9 @@
 #endif
 #if PL_CONFIG_HAS_MOTOR
 #include "Motor.h"
+#endif
+#if PL_CONFIG_HAS_TURN
+#include "Turn.h"
 #endif
 #if PL_CONFIG_BOARD_IS_ROBO_V2
 #include "PORT_PDD.h"
@@ -108,16 +112,16 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
 	case EVNT_SW1_PRESSED:
 		BtnMsg(1, "pressed");
-		#if PL_CONFIG_HAS_BUZZER
-		BUZ_Beep(500, 1000);
-		#endif
 		LED2_Neg();
-		#if PL_CONFIG_HAS_MOTOR
-		REF_CalibrateStartStop();
-		#endif
 		break;
 	case EVNT_SW1_LPRESSED:
 		BtnMsg(1, "long pressed");
+		#if PL_CONFIG_HAS_BUZZER
+			BUZ_Beep(600, 1000);
+		#endif
+		#if PL_CONFIG_HAS_MOTOR
+			REF_CalibrateStartStop();
+		#endif
 		break;
 	case EVNT_SW1_RELEASED:
 		BtnMsg(1, "released");
@@ -363,8 +367,43 @@ static void DriveTask(void *pvParam) {
 			}
 		}
 	#endif
-	vTaskDelay(pdMS_TO_TICKS(10));
-	}
+
+	#if LAB_34_TURN
+		if (REF_IsReady()){
+			MOT_SetSpeedPercent(&motorLeft, 30);
+			MOT_SetSpeedPercent(&motorRight, 30);
+			REF_LineKind r = REF_GetLineKind();
+
+			switch (r) {
+			case REF_LINE_NONE: /* no line, sensors do not see a line */
+				//to do
+				TURN_Turn(TURN_LEFT180, NULL);
+				//MOT_SetDirection(&motorLeft, MOT_DIR_FORWARD);
+				//MOT_SetDirection(&motorRight, MOT_DIR_FORWARD);
+				break;
+			case REF_LINE_STRAIGHT: /* forward line |, sensors see a line underneath */
+				// to do
+				break;
+			case REF_LINE_LEFT: /* left half of sensors see line */
+				// to do
+				break;
+			case REF_LINE_RIGHT: /* right half of sensors see line */
+				// to do
+				break;
+			case REF_LINE_FULL: /* all sensors see a line */
+				// to do
+				MOT_SetDirection(&motorLeft, MOT_DIR_FORWARD);
+				MOT_SetDirection(&motorRight, MOT_DIR_FORWARD);
+				break;
+			default:
+				break;
+			} /* switch */
+		} /* if */
+	#endif /* LAB_34_TURN */
+
+
+		vTaskDelay(pdMS_TO_TICKS(10));
+	} /* for */
 #endif /* ROBO_USE_TEL */
 
 
