@@ -17,6 +17,7 @@
 #define LAB_21_TASK (1)
 #define LAB_27_SENSOR (1)
 #define LAB_34_TURN (0)
+#define LAB_xx_LINE_FOLLOWING (1)
 
 #include "Platform.h"
 #include "Application.h"
@@ -51,12 +52,14 @@
 #endif
 #if PL_CONFIG_HAS_TURN
 #include "Turn.h"
+#include "Drive.h"
 #endif
 #if PL_CONFIG_BOARD_IS_ROBO_V2
 #include "PORT_PDD.h"
 #endif
 #if PL_CONFIG_HAS_LINE_FOLLOW
 #include "LineFollow.h"
+int race_mode = 1;
 #endif
 #if PL_CONFIG_HAS_LCD_MENU
 #include "LCD.h"
@@ -92,6 +95,8 @@ static void BtnMsg(int btn, const char *msg) {
 #endif
 }
 
+
+
 void APP_EventHandler(EVNT_Handle event) {
 	/*! \todo handle events */
 	switch (event) {
@@ -104,15 +109,22 @@ void APP_EventHandler(EVNT_Handle event) {
 		LED1_Off();
 	}
 		break;
-
 	case EVNT_LED_HEARTBEAT:
 		LED1_Neg();
 		break;
-
 #if PL_CONFIG_NOF_KEYS>=1
 	case EVNT_SW1_PRESSED:
 		BtnMsg(1, "pressed");
 		LED2_Neg();
+		#if PL_CONFIG_HAS_LINE_FOLLOW && LAB_xx_LINE_FOLLOWING
+		if (race_mode){
+			race_mode = 0;
+			LF_StartFollowing();
+		} else{
+			LF_StopFollowing();
+			race_mode = 1;
+		}
+		#endif
 		break;
 	case EVNT_SW1_LPRESSED:
 		BtnMsg(1, "long pressed");
@@ -125,6 +137,7 @@ void APP_EventHandler(EVNT_Handle event) {
 		break;
 	case EVNT_SW1_RELEASED:
 		BtnMsg(1, "released");
+		BUZ_Beep(1200, 500);
 		break;
 #endif
 
@@ -378,6 +391,7 @@ static void DriveTask(void *pvParam) {
 			case REF_LINE_NONE: /* no line, sensors do not see a line */
 				//to do
 				TURN_Turn(TURN_LEFT180, NULL);
+				DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
 				//MOT_SetDirection(&motorLeft, MOT_DIR_FORWARD);
 				//MOT_SetDirection(&motorRight, MOT_DIR_FORWARD);
 				break;

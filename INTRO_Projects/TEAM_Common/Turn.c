@@ -30,7 +30,7 @@
 #if 0
 #define TURN_STEPS_90         400
 #else
-#define TURN_STEPS_90         700
+#define TURN_STEPS_90         680
 #endif
   /*!< number of steps for a 90 degree turn */
 #define TURN_STEPS_LINE       100

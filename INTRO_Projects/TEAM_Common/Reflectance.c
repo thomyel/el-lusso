@@ -34,7 +34,7 @@
 #define REF_SENSOR1_IS_LEFT   1 /* sensor number one is on the left side */
 #define REF_MIN_NOISE_VAL     0x40   /* values below this are not added to the weighted sum */
 #define REF_USE_WHITE_LINE    0  /* if set to 1, then the robot is using a white (on black) line, otherwise a black (on white) line */
-#define REF_MAX_TIMEVAL 	  0x0800//60000
+#define REF_MAX_TIMEVAL 	  0x0800 //600000
 #define REF_START_STOP_CALIB      1 /* start/stop calibration commands */
 #if REF_START_STOP_CALIB
   static xSemaphoreHandle REF_StartStopSem = NULL;
@@ -600,8 +600,8 @@ void REF_Init(void) {
   refState = REF_STATE_INIT;
   timerHandle = RefCnt_Init(NULL);
   /*! \todo You might need to adjust priority or other task settings */
-  if (xTaskCreate(ReflTask, "Refl", 600/sizeof(StackType_t), NULL, (tskIDLE_PRIORITY+2), NULL) != pdPASS) {
-    for(;;){} /* error */
+  if (xTaskCreate(ReflTask, "Refl", 600/sizeof(StackType_t), NULL, (tskIDLE_PRIORITY+4), NULL) != pdPASS) {
+    for(;;){} /* error */													/* ist +2 gewesen*/
   }
 }
 #endif /* PL_HAS_REFLECTANCE */
