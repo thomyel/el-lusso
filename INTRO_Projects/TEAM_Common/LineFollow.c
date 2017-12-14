@@ -94,21 +94,23 @@ static void StateMachine(void) {
     case STATE_FOLLOW_SEGMENT:
       if (!FollowSegment()) {
         //SHELL_SendString((unsigned char*)"No line, stopped!\r\n");
-        LF_currState = STATE_STOP; /* stop if we do not have a line any more */
-        LF_currState = STATE_FOLLOW_SEGMENT;//STATE_TURN;
+        //LF_currState = STATE_STOP; /* stop if we do not have a line any more */
+    	//LF_currState = STATE_FOLLOW_SEGMENT;
+        LF_currState = STATE_TURN;
       }
       break;
 
     case STATE_TURN:
       lineKind = REF_GetLineKind();
+      if (lineKind==REF_LINE_NONE) {
+    	  LF_currState = STATE_STOP;
+      }
       if (lineKind==REF_LINE_FULL) {
-        LF_currState = STATE_FINISHED;
-      } if (lineKind==REF_LINE_NONE) {
         TURN_Turn(TURN_LEFT180, NULL);
         DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
-        LF_currState = STATE_TURN;//STATE_FOLLOW_SEGMENT;
+        LF_currState = STATE_FOLLOW_SEGMENT;
       } else {
-        LF_currState = STATE_STOP;
+          LF_currState = STATE_FOLLOW_SEGMENT;
       }
       break;
 
