@@ -25,6 +25,8 @@ typedef enum {
 static SUMO_State_t sumoState = SUMO_STATE_IDLE;
 static TaskHandle_t sumoTaskHndl;
 
+bool sumoRadar;
+
 /* direct task notification bits */
 #define SUMO_START_SUMO (1<<0)  /* start sumo mode */
 #define SUMO_STOP_SUMO  (1<<1)  /* stop stop sumo */
@@ -51,6 +53,8 @@ void SUMO_StartStopSumo(void) {
 
 static void SumoRun(void) {
   uint32_t notifcationValue;
+  REF_LineKind lineKind;
+
   /*! \todo extend as needed */
 
   (void)xTaskNotifyWait(0UL, SUMO_START_SUMO|SUMO_STOP_SUMO, &notifcationValue, 0); /* check flags */
@@ -70,6 +74,17 @@ static void SumoRun(void) {
         break; /* handle next state */
 
       case SUMO_STATE_DRIVING:
+    	  lineKind = REF_GetLineKind();
+    	       if (lineKind==REF_LINE_FULL) {
+    	    	   DRV_SetMode(DRV_MODE_SPEED);
+    	       }
+    	       else
+    	       {
+    	     	   TURN_Turn(TURN_LEFT180, NULL);
+    	     	   DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
+    	     	  sumoState = SUMO_STATE_DRIVING;
+    	       }
+
         if (notifcationValue&SUMO_STOP_SUMO) {
            DRV_SetMode(DRV_MODE_STOP);
            sumoState = SUMO_STATE_IDLE;

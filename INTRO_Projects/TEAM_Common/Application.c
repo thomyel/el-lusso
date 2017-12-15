@@ -17,7 +17,8 @@
 #define LAB_21_TASK (1)
 #define LAB_27_SENSOR (1)
 #define LAB_34_TURN (0)
-#define LAB_xx_LINE_FOLLOWING (1)
+#define LAB_xx_LINE_FOLLOWING (0)
+#define LAB_SUMO (1)
 
 #include "Platform.h"
 #include "Application.h"
@@ -116,6 +117,17 @@ void APP_EventHandler(EVNT_Handle event) {
 	case EVNT_SW1_PRESSED:
 		BtnMsg(1, "pressed");
 		LED2_Neg();
+
+#if LAB_SUMO
+		if (race_mode){
+					race_mode = 0;
+					SUMO_StartSumo();
+				} else{
+					SUMO_StopSumo();
+					race_mode = 1;
+				}
+#endif
+
 		#if PL_CONFIG_HAS_LINE_FOLLOW && LAB_xx_LINE_FOLLOWING
 		if (race_mode){
 			race_mode = 0;

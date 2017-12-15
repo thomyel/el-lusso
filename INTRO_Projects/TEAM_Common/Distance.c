@@ -38,6 +38,10 @@
   #include "TofCE3.h"
   #include "TofCE4.h"
 #endif
+#if PL_CONFIG_HAS_RTOS
+#include "FRTOS1.h"
+#include "RTOS.h"
+#endif
 
 #if PL_HAS_TOF_SENSOR
 
@@ -665,7 +669,7 @@ static void TofTask(void *param) {
       }
     }
 #endif
-    vTaskDelay(pdMS_TO_TICKS(10));
+    vTaskDelay(pdMS_TO_TICKS(100));
   }
 }
 #endif /* PL_HAS_TOF_SENSOR */
@@ -675,7 +679,7 @@ void DIST_Deinit(void) {
 
 void DIST_Init(void) {
 #if PL_HAS_TOF_SENSOR
-  if (xTaskCreate(TofTask, "ToF", 1000/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+2, NULL) != pdPASS) {
+  if (xTaskCreate(TofTask, "ToF", 1000/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+4, NULL) != pdPASS) {
     for(;;){} /* error */
   }
 #endif

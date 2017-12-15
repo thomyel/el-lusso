@@ -120,7 +120,7 @@ void PL_Init(void) {
   SQUEUE_Init();
 #endif
 #if PL_CONFIG_HAS_SEMAPHORE
-  SEM_Init();
+  //SEM_Init();
 #endif
 #if PL_CONFIG_HAS_REFLECTANCE
   REF_Init();
