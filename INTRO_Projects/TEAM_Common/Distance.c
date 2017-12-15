@@ -267,7 +267,7 @@ bool DIST_NearFrontObstacle(int16_t distance) {
 
   val = DIST_GetToFDistance(DIST_TOF_FRONT);
   if (val<0) {
-    return TRUE; /* sensor failure? */
+    return FALSE; /* sensor failure? */
   }
   return val>=0 && val<=distance;
 #else
@@ -282,7 +282,7 @@ bool DIST_NearRearObstacle(int distance) {
 
   val = DIST_GetToFDistance(DIST_TOF_REAR);
   if (val<0) {
-    return TRUE; /* sensor failure? */
+    return FALSE; /* sensor failure? */
   }
   return val>=0 && val<=distance;
 #else
@@ -297,7 +297,7 @@ bool DIST_NearLeftObstacle(int distance) {
 
   val = DIST_GetToFDistance(DIST_TOF_LEFT);
   if (val<0) {
-    return TRUE; /* sensor failure? */
+    return FALSE; /* sensor failure? */
   }
   return val>=0 && val<=distance;
 #else
@@ -312,7 +312,7 @@ bool DIST_NearRightObstacle(int distance) {
 
   val = DIST_GetToFDistance(DIST_TOF_RIGHT);
   if (val<0) {
-    return TRUE; /* sensor failure? */
+    return FALSE; /* sensor failure? */
   }
   return val>=0 && val<=distance;
 #else
@@ -325,16 +325,16 @@ uint8_t DIST_CheckSurrounding(void) {
   uint8_t walls = 0;
 
 #if PL_HAS_TOF_SENSOR
-  if (DIST_NearFrontObstacle(60)) {
+  if (DIST_NearFrontObstacle(300)) {
     walls |= (1<<DIST_TOF_FRONT);
   }
-  if (DIST_NearRearObstacle(40)) {
+  if (DIST_NearRearObstacle(300)) {
     walls |= (1<<DIST_TOF_REAR);
   }
-  if (DIST_NearLeftObstacle(50)) {
+  if (DIST_NearLeftObstacle(300)) {
     walls |= (1<<DIST_TOF_LEFT);
   }
-  if (DIST_NearRightObstacle(50)) {
+  if (DIST_NearRightObstacle(300)) {
     walls |= (1<<DIST_TOF_RIGHT);
   }
 #endif

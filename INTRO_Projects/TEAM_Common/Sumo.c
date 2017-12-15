@@ -10,6 +10,8 @@
 #include "Sumo.h"
 #include "FRTOS1.h"
 #include "Drive.h"
+#include "Distance.h"
+#include "Turn.h"
 #include "Reflectance.h"
 #include "Turn.h"
 #include "CLS1.h"
@@ -75,6 +77,28 @@ static void SumoRun(void) {
 
       case SUMO_STATE_DRIVING:
     	  lineKind = REF_GetLineKind();
+    	  int i = DIST_CheckSurrounding();
+
+    	   if(DIST_NearFrontObstacle(100)&&(DIST_GetDistance(DIST_SENSOR_FRONT)!=-1))
+    	  {
+    	        DRV_SetSpeed(2000, 2000);
+    	        DRV_SetMode(DRV_MODE_SPEED);
+    	        sumoState = SUMO_STATE_DRIVING;
+    	  }
+
+    	   else if(DIST_NearRightObstacle(100))
+    	  {
+    		  TURN_TurnAngle(10, NULL);
+    		  DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
+    		  sumoState = SUMO_STATE_DRIVING;
+    	  }
+    	   else
+    	   {
+    	    		  sumoState = SUMO_STATE_START_DRIVING;
+    	   }
+
+
+    	  /*
     	       if (lineKind==REF_LINE_FULL) {
     	    	   DRV_SetMode(DRV_MODE_SPEED);
     	       }
@@ -82,8 +106,20 @@ static void SumoRun(void) {
     	       {
     	     	   TURN_Turn(TURN_LEFT180, NULL);
     	     	   DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
-    	     	  sumoState = SUMO_STATE_DRIVING;
-    	       }
+    	     	 // sumoState = SUMO_STATE_DRIVING;
+    	   //    }
+    	      // uint8_t DIST_SpeedIntoObstacle(int speedL, int speedR);
+    	    //   uint8_t DIST_MotorDrivingIntoObstacle(void);
+    	      // uint8_t DIST_CheckSurrounding(void);
+    	    //   bool DIST_DriveToCenter(void);
+    	     //  bool DIST_NearFrontObstacle(int16_t distance);
+    	     //  bool DIST_NearRearObstacle(int distance);
+    	    //   bool DIST_NearLeftObstacle(int distance);
+    	    //   bool DIST_NearRightObstacle(int distance);
+
+
+    	    //	   DIST_SpeedIntoObstacle(1000, 1000);
+
 
         if (notifcationValue&SUMO_STOP_SUMO) {
            DRV_SetMode(DRV_MODE_STOP);
