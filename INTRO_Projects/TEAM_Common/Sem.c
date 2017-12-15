@@ -21,7 +21,7 @@
 #include "LED.h"
 
 static xSemaphoreHandle sem = NULL;
-
+#if 0
 static void vSlaveTask(void *pvParameters) {
   /*! \todo Implement functionality */
 
@@ -44,14 +44,14 @@ static void vMasterTask(void *pvParameters) {
 		vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(1500));
 	}
 }
-
+#endif
 void SEM_Deinit(void) {
 
 }
 
 /*! \brief Initializes module */
 void SEM_Init(void) {
-
+#if 0
 	  // Task creation for SlaveTask - it takes the semaphore for LED Blink
 	  if (xTaskCreate(vSlaveTask, "Slave Task", configMINIMAL_STACK_SIZE+100, NULL, tskIDLE_PRIORITY, NULL)!=pdPASS) {
 		  for(;;) {} /* error? */
@@ -67,5 +67,6 @@ void SEM_Init(void) {
 	  if(sem == NULL){	// Check if the Sempahore exist, when no, then goes to endless-loop
 		  for(;;) {} /* error handling */
 	  }
+#endif
 }
 #endif /* PL_CONFIG_HAS_SEMAPHORE */

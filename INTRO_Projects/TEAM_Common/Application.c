@@ -117,17 +117,15 @@ void APP_EventHandler(EVNT_Handle event) {
 	case EVNT_SW1_PRESSED:
 		BtnMsg(1, "pressed");
 		LED2_Neg();
-
-#if LAB_SUMO
+		#if LAB_SUMO
 		if (race_mode){
-					race_mode = 0;
-					SUMO_StartSumo();
-				} else{
-					SUMO_StopSumo();
-					race_mode = 1;
-				}
-#endif
-
+			race_mode = 0;
+			SUMO_StartSumo();
+		} else {
+			SUMO_StopSumo();
+			race_mode = 1;
+		}
+		#endif
 		#if PL_CONFIG_HAS_LINE_FOLLOW && LAB_xx_LINE_FOLLOWING
 		if (race_mode){
 			race_mode = 0;
