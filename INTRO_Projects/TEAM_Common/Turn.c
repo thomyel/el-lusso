@@ -30,21 +30,25 @@
 #if 0
 #define TURN_STEPS_90         400
 #else
-#define TURN_STEPS_90         680
+#define TURN_STEPS_90         650
 #endif
   /*!< number of steps for a 90 degree turn */
 #define TURN_STEPS_LINE       100
+#define TURN_STEPS_LINE_SUMO  1000
   /*!< number of steps stepping over the line */
 #define TURN_STEPS_POST_LINE  50
   /*!< number of steps after the line, before making a turn */
 #define TURN_STEPS_90_TIMEOUT_MS        1000
 #define TURN_STEPS_LINE_TIMEOUT_MS      200
 #define TURN_STEPS_POST_LINE_TIMEOUT_MS 200
+#define TURN_STEPS_LINE_TIMEOUT_MS_SUMO 100
 #define TURN_STEPS_STOP_TIMEOUT_MS      150
 
 static int32_t TURN_Steps90 = TURN_STEPS_90;
 static int32_t TURN_StepsLine = TURN_STEPS_LINE;
 static int32_t TURN_StepsPostLine = TURN_STEPS_POST_LINE;
+static int32_t TURN_StepsLine_Sumo = TURN_STEPS_LINE_SUMO;
+
 
 /*!
  * \brief Translate a turn kind into a string
@@ -61,6 +65,7 @@ const unsigned char *TURN_TurnKindStr(TURN_Kind kind) {
     case TURN_STRAIGHT:               return (const unsigned char*)"STRAIGHT";
     case TURN_STEP_LINE_FW:           return (const unsigned char*)"STEP_LINE_FW";
     case TURN_STEP_LINE_BW:           return (const unsigned char*)"STEP_LINE_BW";
+    case TURN_STEP_LINE_BW_SUMO: 	  return (const unsigned char*)"STEP_LINE_BW_SUMO";
     case TURN_STEP_POST_LINE_FW:      return (const unsigned char*)"STEP_POST_LINE_FW";
     case TURN_STEP_POST_LINE_BW:      return (const unsigned char*)"STEP_POST_LINE_BW";
     case TURN_STEP_LINE_FW_POST_LINE: return (const unsigned char*)"STEP_LINE_FW_POST_LINE";
@@ -153,6 +158,9 @@ void TURN_Turn(TURN_Kind kind, TURN_StopFct stopIt) {
     case TURN_STEP_LINE_BW:
       StepsTurn(-TURN_StepsLine, -TURN_StepsLine, stopIt, TURN_STEPS_LINE_TIMEOUT_MS);
       break;
+    case TURN_STEP_LINE_BW_SUMO:
+          StepsTurn(-TURN_StepsLine_Sumo, -TURN_StepsLine_Sumo, stopIt, TURN_STEPS_LINE_TIMEOUT_MS_SUMO);
+          break;
     case TURN_STEP_POST_LINE_FW:
       StepsTurn(TURN_StepsPostLine, TURN_StepsPostLine, stopIt, TURN_STEPS_POST_LINE_TIMEOUT_MS);
       break;

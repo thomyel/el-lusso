@@ -28,9 +28,10 @@ typedef struct {
   int ms; /* milliseconds */
 } BUZ_Tune;
 
-/*static const BUZ_Tune MelodyWelcome[] =
+#if 1
+static const BUZ_Tune MelodyWelcome[] =
 { /* freq, ms */
-/*    {300,500},
+    {300,500},
     {500,200},
     {300,100},
     {200,300},
@@ -65,8 +66,10 @@ typedef struct {
     {0,100},
     {500,600},
     {0,100},
-};*/
+};
+#endif
 
+#if 0
 static const BUZ_Tune MelodyWelcome[] = //Postauto Melodie
 {	/* freq, ms */
 	{555,800},
@@ -74,7 +77,7 @@ static const BUZ_Tune MelodyWelcome[] = //Postauto Melodie
 	{440,800},
 	{10,300},
 };
-
+#endif
 
 static const BUZ_Tune MelodyButton[] =
 { /* freq, ms */

@@ -18,6 +18,10 @@
 #include "Buzzer.h"
 #include "UTIL1.h"
 
+#define TOF_DISTANCE 250
+#define SPEED_SET 10000
+#define SPEED_OF_OBSTACLE 18000
+
 typedef enum {
 	SUMO_STATE_IDLE, SUMO_STATE_START_DRIVING, SUMO_STATE_DRIVING,
 } SUMO_State_t;
@@ -69,28 +73,28 @@ static void SumoRun(void) {
 			return;
 
 		case SUMO_STATE_START_DRIVING:
-			DRV_SetSpeed(8000, 8000);
+			DRV_SetSpeed(SPEED_SET, SPEED_SET);
 			DRV_SetMode(DRV_MODE_SPEED);
 			sumoState = SUMO_STATE_DRIVING;
 			break; /* handle next state */
 
 		case SUMO_STATE_DRIVING:
 			lineKind = REF_GetLineKind();
-			int i = DIST_CheckSurrounding();
+			//int i = DIST_CheckSurrounding();
 
-			if (DIST_NearFrontObstacle(250) && (DIST_GetDistance(DIST_SENSOR_FRONT) != -1)) {
-				DRV_SetSpeed(8000, 8000);
+			if (DIST_NearFrontObstacle(TOF_DISTANCE) && (DIST_GetDistance(DIST_SENSOR_FRONT) != -1)) {
+				DRV_SetSpeed(SPEED_OF_OBSTACLE, SPEED_OF_OBSTACLE);
 				DRV_SetMode(DRV_MODE_SPEED);
 				sumoState = SUMO_STATE_DRIVING;
-			} else if (DIST_NearRightObstacle(250) && (DIST_GetDistance(DIST_SENSOR_RIGHT) != -1)) {
+			} else if (DIST_NearRightObstacle(TOF_DISTANCE) && (DIST_GetDistance(DIST_SENSOR_RIGHT) != -1)) {
 				TURN_TurnAngle(90, NULL);
 				DRV_SetMode(DRV_MODE_SPEED); /* disable position mode */
 				sumoState = SUMO_STATE_DRIVING;
-			} else if (DIST_NearLeftObstacle(250) && (DIST_GetDistance(DIST_SENSOR_LEFT) != -1)) {
+			} else if (DIST_NearLeftObstacle(TOF_DISTANCE) && (DIST_GetDistance(DIST_SENSOR_LEFT) != -1)) {
 				TURN_TurnAngle(-90, NULL);
 				DRV_SetMode(DRV_MODE_SPEED); /* disable position mode */
 				sumoState = SUMO_STATE_DRIVING;
-			} else if(DIST_NearRearObstacle(250) && (DIST_GetDistance(DIST_SENSOR_REAR) != -1)){
+			} else if(DIST_NearRearObstacle(TOF_DISTANCE) && (DIST_GetDistance(DIST_SENSOR_REAR) != -1)){
 				TURN_TurnAngle(180, NULL);
 				DRV_SetMode(DRV_MODE_SPEED); /* disable position mode */
 				sumoState = SUMO_STATE_DRIVING;
@@ -102,7 +106,11 @@ static void SumoRun(void) {
 			if (lineKind==REF_LINE_FULL) {
 				 DRV_SetMode(DRV_MODE_SPEED);
 			 } else {
-				 TURN_Turn(TURN_LEFT180, NULL);
+				 DRV_SetSpeed(-6000, -6000);
+				 DRV_SetMode(DRV_MODE_POS);
+				 //DRV_SetPos(-200,-200);
+				 TURN_Turn(TURN_STEP_LINE_BW_SUMO,NULL);
+				 TURN_TurnAngle(120, NULL);
 				 DRV_SetMode(DRV_MODE_SPEED);
 			 }
 
@@ -198,7 +206,7 @@ uint8_t SUMO_ParseCommand(const unsigned char *cmd, bool *handled,
 }
 
 void SUMO_Init(void) {
-	if (xTaskCreate(SumoTask, "Sumo", 500 / sizeof(StackType_t), NULL,
+	if (xTaskCreate(SumoTask, "Sumo", 600 / sizeof(StackType_t), NULL,
 			tskIDLE_PRIORITY + 2, &sumoTaskHndl) != pdPASS) {
 		for (;;) {
 		} /* error case only, stay here! */

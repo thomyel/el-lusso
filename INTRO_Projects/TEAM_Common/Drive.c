@@ -370,7 +370,7 @@ void DRV_Init(void) {
     for(;;){} /* out of memory? */
   }
   FRTOS1_vQueueAddToRegistry(DRV_Queue, "Drive");
-  if (xTaskCreate(DriveTask, "Drive", 400/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+9, NULL) != pdPASS) {
+  if (xTaskCreate(DriveTask, "Drive", 500/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+9, NULL) != pdPASS) {
     for(;;){} /* error */
   }
 }

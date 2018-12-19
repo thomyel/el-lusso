@@ -20,29 +20,27 @@
 #include "Sem.h"
 #include "LED.h"
 
-static xSemaphoreHandle sem = NULL;
 #if 0
+static xSemaphoreHandle sem = NULL;
+
 static void vSlaveTask(void *pvParameters) {
   /*! \todo Implement functionality */
-
-	// Slave Task with the required parameters (Take the Semaphore, toggle LED and wait for 1.5s)
+	/* Slave Task with the required parameters */
 	TickType_t xLastWakeTime = xTaskGetTickCount();
 	for(;;){
-		xSemaphoreTake(sem, 0);
-		LEDPin2_NegVal();
+		xSemaphoreTake(sem, 0);	/* Take the Semaphore */
+		LEDPin2_NegVal(); /* toggle LED */
 		vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(1500));
-	}
+	}						/* wait for 1.5s */
 }
-
 static void vMasterTask(void *pvParameters) {
   /*! \todo send semaphore from master task to slave task */
-
-	// Master Task with the required parameters (Give the Semaphore and wait for 1.5s)
+	// Master Task with the required parameters
 	TickType_t xLastWakeTime = xTaskGetTickCount();
 	for(;;){
-		xSemaphoreGive(sem);
+		xSemaphoreGive(sem); /* Give the Semaphore */
 		vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(1500));
-	}
+	}						/* wait for 1.5s */
 }
 #endif
 void SEM_Deinit(void) {

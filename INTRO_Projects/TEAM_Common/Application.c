@@ -17,8 +17,8 @@
 #define LAB_21_TASK (1)
 #define LAB_27_SENSOR (1)
 #define LAB_34_TURN (0)
-#define LAB_xx_LINE_FOLLOWING (0)
-#define LAB_SUMO (1)
+#define LAB_xx_LINE_FOLLOWING (1)
+#define LAB_SUMO (0)
 
 #include "Platform.h"
 #include "Application.h"
@@ -61,6 +61,8 @@
 #if PL_CONFIG_HAS_LINE_FOLLOW
 #include "LineFollow.h"
 int race_mode = 1;
+int wait_time = 1;
+int buzzer_freq = 600;
 #endif
 #if PL_CONFIG_HAS_LCD_MENU
 #include "LCD.h"
@@ -118,14 +120,24 @@ void APP_EventHandler(EVNT_Handle event) {
 		BtnMsg(1, "pressed");
 		LED2_Neg();
 		#if LAB_SUMO
+		for(wait_time; wait_time <= 5; wait_time++){
+			if(wait_time < 4){
+				BUZ_Beep(buzzer_freq, 200);
+				vTaskDelay(1100/portTICK_PERIOD_MS);
+			} else{
+				BUZ_Beep(800, 200);
+				vTaskDelay(1100/portTICK_PERIOD_MS);
+			}
+		}
 		if (race_mode){
 			race_mode = 0;
+			BUZ_Beep(1200, 500);
 			SUMO_StartSumo();
 		} else {
 			SUMO_StopSumo();
 			race_mode = 1;
 		}
-		#endif
+		#endif /*LAB_SUMO */
 		#if PL_CONFIG_HAS_LINE_FOLLOW && LAB_xx_LINE_FOLLOWING
 		if (race_mode){
 			race_mode = 0;
@@ -133,17 +145,17 @@ void APP_EventHandler(EVNT_Handle event) {
 		} else{
 			LF_StopFollowing();
 			race_mode = 1;
-		}
-		#endif
+		} /* race mode */
+		#endif/* PL_CONFIG_HAS_LINE_FOLLOW && LAB_xx_LINE_FOLLOWING */
 		break;
 	case EVNT_SW1_LPRESSED:
 		BtnMsg(1, "long pressed");
 		#if PL_CONFIG_HAS_BUZZER
-			BUZ_Beep(600, 1000);
-		#endif
+			BUZ_Beep(1200, 500);
+		#endif /* PL_CONFIG_HAS_BUZZER */
 		#if PL_CONFIG_HAS_MOTOR
 			REF_CalibrateStartStop();
-		#endif
+		#endif /* PL_CONFIG_HAS_MOTOR */
 		break;
 	case EVNT_SW1_RELEASED:
 		BtnMsg(1, "released");
@@ -161,7 +173,7 @@ void APP_EventHandler(EVNT_Handle event) {
 		case EVNT_SW2_RELEASED:
 		BtnMsg(2, "released");
 		break;
-#endif
+#endif /* PL_CONFIG_NOF_KEYS>=2 */
 
 #if PL_CONFIG_NOF_KEYS>=3
 		case EVNT_SW3_PRESSED:
@@ -174,6 +186,7 @@ void APP_EventHandler(EVNT_Handle event) {
 		BtnMsg(3, "released");
 		break;
 #endif
+
 #if PL_CONFIG_NOF_KEYS>=4
 		case EVNT_SW4_PRESSED:
 		BtnMsg(4, "pressed");
@@ -327,7 +340,7 @@ static void BlinkyTask(void *pvParameters) {
 		vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(100));
 	}
 }
-#endif
+#endif /* LAB_19_FRTOS */
 
 
 #if LAB_21_TASK
@@ -343,7 +356,7 @@ static void MyAppTask(void *pvParam) {
 		vTaskDelay(pdMS_TO_TICKS(10));
 	}
 }
-#endif
+#endif /* LAB_21_TASK */
 
 
 #if LAB_27_SENSOR
@@ -389,7 +402,7 @@ static void DriveTask(void *pvParam) {
 				MOT_SetDirection(&motorRight, MOT_DIR_FORWARD);
 			}
 		}
-	#endif
+#endif
 
 	#if LAB_34_TURN
 		if (REF_IsReady()){
@@ -447,15 +460,16 @@ void APP_Start(void) {
 
 	#if LAB_19_FRTOS /*---------------Begin Lab 19---------------*/
 	//Task Creation Blinky LED
-	BaseType_t res;						// local Variables
-	xTaskHandle taskHndl;				// local taskHandler
+	BaseType_t res;						/* local Variables */
+	xTaskHandle taskHndl;				/* local taskHandler */
 
-	res = xTaskCreate(BlinkyTask, // Task Function commit to local variables with required parameters, Function Name
-			"Blinky", 					// Debug Name (for Kernel)
-			configMINIMAL_STACK_SIZE + 50, 	// Stack size
-			(void*) NULL, 				// Optional task parameter or NULL
-			tskIDLE_PRIORITY + 1, 			// Task priority
-			&taskHndl); 					// Task handling
+	res = xTaskCreate(BlinkyTask, /* Task Function commit to local variables with required
+									 parameters, Function Name*/
+			"Blinky", 					/* Debug Name (for Kernel)*/
+			configMINIMAL_STACK_SIZE + 50, 	/* Stack size */
+			(void*) NULL, 				/* Optional task parameter or NULL */
+			tskIDLE_PRIORITY + 1, 	    /* Task priority */
+			&taskHndl); 				/* Task handling */
 
 	// The task creation wasn't successful? --> error Handling
 	if (res != pdPASS) { /*error handling here*/}
@@ -464,7 +478,7 @@ void APP_Start(void) {
 
 
 	#if LAB_21_TASK /* Begin Lab 21 */
-		if (xTaskCreate(MyAppTask, "App", configMINIMAL_STACK_SIZE + 100, NULL, tskIDLE_PRIORITY, NULL) != pdPASS) {
+		if (xTaskCreate(MyAppTask, "AppTask", configMINIMAL_STACK_SIZE + 100, NULL, tskIDLE_PRIORITY, NULL) != pdPASS) {
 			for (;;) {/* error? */}
 		}
 		#if 0
@@ -475,7 +489,7 @@ void APP_Start(void) {
 
 	#if LAB_27_SENSOR /* Begin Lab 27 */
 		#if PL_CONFIG_HAS_MOTOR
-		if (xTaskCreate(DriveTask, "App", configMINIMAL_STACK_SIZE + 100, NULL, tskIDLE_PRIORITY, NULL) != pdPASS) {
+		if (xTaskCreate(DriveTask, "GeneralDrive", configMINIMAL_STACK_SIZE + 100, NULL, tskIDLE_PRIORITY, NULL) != pdPASS) {
 			for (;;) {/* error? */}
 		}
 		#endif

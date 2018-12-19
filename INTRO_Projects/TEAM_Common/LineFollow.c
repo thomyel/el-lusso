@@ -23,6 +23,7 @@
 #include "Shell.h"
 #if PL_CONFIG_HAS_BUZZER
   #include "Buzzer.h"
+  int noOfRep = 0;
 #endif
 #if PL_CONFIG_HAS_DRIVE
   #include "Drive.h"
@@ -107,6 +108,13 @@ static void StateMachine(void) {
       }
       if (lineKind==REF_LINE_FULL) {
         TURN_Turn(TURN_LEFT180, NULL);
+        /*if((noOfRep % 5) == 0){
+        	noOfRep = 0;
+        	BUZ_PlayTune(BUZ_TUNE_WELCOME);
+        }
+        noOfRep=noOfRep+1;*/
+        vTaskDelay(100/portTICK_PERIOD_MS);
+        TURN_Turn(TURN_STEP_LINE_FW, NULL);
         DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
         LF_currState = STATE_FOLLOW_SEGMENT;
       } else {
@@ -211,7 +219,7 @@ void LF_Deinit(void) {
 
 void LF_Init(void) {
   LF_currState = STATE_IDLE;
-  if (xTaskCreate(LineTask, "Line", 400/sizeof(StackType_t), NULL, tskIDLE_PRIORITY, &LFTaskHandle) != pdPASS) {
+  if (xTaskCreate(LineTask, "Line", 400/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+3, &LFTaskHandle) != pdPASS) {
     for(;;){} /* error */
   }
 }

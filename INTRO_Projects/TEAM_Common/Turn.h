@@ -27,6 +27,7 @@ typedef enum {
   TURN_STEP_BORDER_BW, /* step back from Sumo border */
   TURN_STEP_POST_LINE_FW, /* step past to line, before a turn */
   TURN_STEP_POST_LINE_BW, /* same as TURN_STEP_POST_LINE_FW, but backwards */
+  TURN_STEP_LINE_BW_SUMO, /* Turn for Sumo*/
   TURN_FINISHED, /* stepped into finish! */
   TURN_STOP_LEFT,   /* stop left motor */
   TURN_STOP_RIGHT,  /* stop right motor */
